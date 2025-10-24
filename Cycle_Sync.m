@@ -178,11 +178,7 @@ stagcnt = 0;
 
 wMat = kron(sparse([1:ss_num]',[1:ss_num]', exp(-tau1* IRAABVec), ss_num,ss_num,ss_num),speye(d));
 
-% CEMP params
-CEMP_parameters.max_iter = 30;
-CEMP_parameters.reweighting = 20;
-CEMP_parameters.nsample = 100;
-CEMP_parameters.no_cemp_iters = true;
+nsample = 100;
 
 for iter1 = 1:WLSiters
     lam = flam(iter1);
@@ -206,8 +202,7 @@ for iter1 = 1:WLSiters
     tijhat = residual_vec + alpha_gamma;
     lenij = sqrt(sum(tijhat.*tijhat));
     tijMat0 = tijMat.*lenij;
-    [~,out] = CEMP_translation([Ind_i,Ind_j],tijMat0,CEMP_parameters);
-    nsample = CEMP_parameters.nsample;
+    out = Compute_cycle_inconsistency([Ind_i,Ind_j],tijMat0,nsample);
     IndMat = out.IndMat;
     CoIndMat = out.CoIndMat;
     IndPos = out.IndPos;
