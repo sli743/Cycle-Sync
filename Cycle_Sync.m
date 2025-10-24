@@ -19,9 +19,9 @@ if ~isfield(opts, 'maxitQuad');     opts.maxitQuad = 200;  end    % Maximum numb
 if ~isfield(opts, 'staglim');       opts.staglim = 5;      end    % Number of iteration for stagnation
 if ~isfield(opts, 'sinmin');       opts.sinmin = 0.6;      end    % Parameter for sine truncation
 if ~isfield(opts, 'tau4');       opts.tau4 = 4;      end    % parameter for reweighting function
-if ~isfield(opts, 'flam');       opts.flam = @(x) x/(x+10);      end    % reweighting function for location refinement
-if ~isfield(opts, 'tau1');       opts.tau1 = 20;      end    % reweighting function for location refinement
-if ~isfield(opts, 'WLSiters');       opts.WLSiters = 20;      end    % reweighting function for location refinement
+if ~isfield(opts, 'flam');       opts.flam = @(x) x/(x+10);      end    % annealing function for location refinement
+if ~isfield(opts, 'tau1');       opts.tau1 = 20;      end    % Reweighting Parameter for weight init
+if ~isfield(opts, 'WLSiters');       opts.WLSiters = 20;      end    % Number of weighted Least Squares Iterations
 if ~isfield(opts, 'beta');       opts.beta = 20;      end    % parameter beta
 
 tolQuad      = opts.tolQuad;
