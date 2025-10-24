@@ -149,7 +149,6 @@ for iter = 1:niter
 end
 
     disp('Completed!')
-out.IRAABVec = IRAABVec;
 
 n = size(AdjMat,1);
 d = size(tijMat,1);
@@ -202,11 +201,11 @@ for iter1 = 1:WLSiters
     tijhat = residual_vec + alpha_gamma;
     lenij = sqrt(sum(tijhat.*tijhat));
     tijMat0 = tijMat.*lenij;
-    out = Compute_cycle_inconsistency([Ind_i,Ind_j],tijMat0,nsample);
-    IndMat = out.IndMat;
-    CoIndMat = out.CoIndMat;
-    IndPos = out.IndPos;
-    S0Mat = out.S0Mat;
+    outc = Compute_cycle_inconsistency([Ind_i,Ind_j],tijMat0,nsample);
+    IndMat = outc.IndMat;
+    CoIndMat = outc.CoIndMat;
+    IndPos = outc.IndPos;
+    S0Mat = outc.S0Mat;
     Ski = zeros(nsample, m);
     Sjk = zeros(nsample, m);
     for l = IndPos
