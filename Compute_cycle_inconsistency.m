@@ -7,9 +7,7 @@
 %% Ind: edge_num by 2 "edge indices matrix". Each row is the index of an edge (i,j) that is sorted as (1,2), (1,3), (1,4),... (2,3), (2,4),.... 
 %% edge_num is the number of edges.
 %% tijMat: 3 by edge_num matrix that stores the given relative translations corresponding to Ind
-%% CEMP_parameters.max_iter: the number of iterations of CEMP
-%% CEMP_parameters.reweighting: the sequence of reweighting parameter beta_t
-%% CEMP_parameters.nsample: the number of sampled cycles per edge
+%% nsample: the number of sampled cycles per edge
 
 %% Output:
 %% out: Struct for relevant outputs
@@ -88,3 +86,4 @@ function[out] = Compute_cycle_inconsistency(Ind,tijMat,nsample)
     out.CoIndMat = CoIndMat;
     out.IndPos = IndPos;
 return
+
