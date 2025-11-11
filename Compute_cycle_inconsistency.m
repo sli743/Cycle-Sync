@@ -3,7 +3,7 @@
 %% Cycle-Sync is copyrighted by Regents of the University of Minnesota and
 %% the Regents of the University of California and covered by US 63/903,432. 
 %% Regents of the University of Minnesota and the Regents of the University
-%% of California will license the use of <Software Name> solely for 
+%% of California will license the use of Cycle-Sync solely for 
 %% educational and research purposes by non-profit institutions and US 
 %% government agencies only. For other proposed uses, contact umotc@umn.edu.
 %% The software may not be sold or redistributed without prior approval. 
@@ -100,5 +100,6 @@ function[out] = Compute_cycle_inconsistency(Ind,tijMat,nsample)
     out.CoIndMat = CoIndMat;
     out.IndPos = IndPos;
 return
+
 
 
