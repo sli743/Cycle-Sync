@@ -96,7 +96,7 @@ for l = IndPos
     cosines = Xkis.*Xjks;
     cosines = abs(sum(cosines,1));
     CoInds_good = CoInds(cosines<sqrt(1-sinmin^2));
-    if ~isempty(CoInds_good)
+    if isempty(CoInds_good)
         error('No good edges for T-AAB. Consider reducing opts.sinmin. ')
     end
     CoIndMat(:,l)= datasample(CoInds, nsample);
@@ -267,6 +267,7 @@ else
 end
 
 return
+
 
 
 
