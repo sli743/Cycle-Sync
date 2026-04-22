@@ -19,8 +19,8 @@ The location solver uses cycle-consistency message passing, T-AAB initialization
 
 ```text
 .
-├── CycleSyncPython/      # Python implementation, demos, tests, and real-data .mat files
-├── CycleSyncMatlab/      # MATLAB implementation, demos, tests, and matching real-data .mat files
+├── Cycle-Sync-Python/      # Python implementation, demos, tests, and real-data .mat files
+├── Cycle-Sync-Matlab/      # MATLAB implementation, demos, tests, and matching real-data .mat files
 └── README.md             # Common entry point
 ```
 
