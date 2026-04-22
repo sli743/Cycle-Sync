@@ -1,6 +1,6 @@
 clear; clc;
 startup;
-mat_file = fullfile('data','real_precomputed','pipes_location(2).mat');
+mat_file = fullfile('data','real_precomputed','delivery_area_location.mat');
 data = load_real_dataset(mat_file);
 params = default_cycle_params_fast();
 res = cycle_sync_location(data.AdjMat,data.edges,data.GammaMat,params);
