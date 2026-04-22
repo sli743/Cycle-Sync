@@ -37,7 +37,7 @@ The Python and MATLAB folders are intended to be equivalent at the experiment le
 ## Quick start: Python
 
 ```bash
-cd CycleSyncPython
+cd Cycle-Sync-Python
 pip install -r requirements.txt
 python demo/run_one_synthetic_experiment.py
 python demo/run_one_real_dataset.py data/real_precomputed/delivery_area_location.mat --alignment robust
@@ -54,7 +54,7 @@ pytest -q tests
 ## Quick start: MATLAB
 
 ```matlab
-cd CycleSyncMatlab
+cd Cycle-Sync-Matlab
 startup
 run('demo/run_one_synthetic_experiment.m')
 run('demo/run_one_real_dataset.m')
@@ -140,16 +140,14 @@ R_global
 Recommended compact demo data:
 
 ```text
-CycleSyncPython/data/real_precomputed/
+Cycle-Sync-Python/data/real_precomputed/
 ├── delivery_area_location.mat
 └── facade_location.mat
 
-CycleSyncMatlab/data/real_precomputed/
+Cycle-Sync-Matlab/data/real_precomputed/
 ├── delivery_area_location.mat
 └── facade_location.mat
 ```
-
-Avoid filenames such as `delivery_area_location(2).mat` or `facade_location(2).mat`; the demos and documentation use the cleaned filenames above.
 
 ## Output files
 
