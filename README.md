@@ -2,6 +2,8 @@
 
 Cycle-Sync is a robust global camera pose estimation method for recovering camera locations from pairwise directions under heavy corruption. This repository contains parallel Python and MATLAB implementations, synthetic-data generators, real-data demos, and baseline comparisons.
 
+To use Cycle-Sync, please cite the following NeurIPS 2025 spotlight paper: [Paper (OpenReview PDF)](https://openreview.net/pdf?id=M3zxsDL2Rk)
+
 The location solver uses cycle-consistency message passing, T-AAB initialization, and a Welsch-type reweighting scheme. The default parameters are:
 
 | Parameter | Default |
