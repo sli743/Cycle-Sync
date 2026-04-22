@@ -11,7 +11,7 @@ from cyclesync.cyclesync import cycle_sync_location
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("mat_file", nargs="?", default="data/real_precomputed/delivery_area_location(2).mat")
+    ap.add_argument("mat_file", nargs="?", default="data/real_precomputed/delivery_area_location.mat")
     ap.add_argument("--fast", action="store_true")
     ap.add_argument("--alignment", default="robust", choices=["robust", "l1", "l2"])
     args = ap.parse_args()
