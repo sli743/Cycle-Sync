@@ -47,7 +47,7 @@ python experiments/compare_methods_real.py --data-dir data/real_precomputed --al
 Run tests:
 
 ```bash
-cd CycleSyncPython
+cd Cycle-Sync-Python
 pytest -q tests
 ```
 
