@@ -99,53 +99,80 @@ def cycle_scores_from_locations(adj, edges, gamma, t, residuals, *, beta, nsampl
 
 def cycle_sync_location(adj, edges, gamma, params: CycleSyncParams | None = None) -> CycleSyncResult:
     params = params or CycleSyncParams()
-    tic = time.perf_counter()
-    n, m = adj.shape[0], len(edges)
-    taab = truncated_aab_scores(
-        adj,
-        edges,
-        gamma,
-        nsample=params.taab_nsample,
-        sinmin=params.sinmin,
-        niter=params.taab_iters,
-        normalize_by_pi=params.normalize_taab_by_pi,
-        seed=params.seed,
-    )
-    weights = np.exp(-params.init_weight_scale * taab.scores) if params.use_taab_init else np.ones(m)
-    history = []
-    alpha = np.ones(m)
-    residuals = np.ones(m)
-    sc = taab.scores.copy()
-    t = np.zeros((3, n))
-    for it in range(1, params.tmax + 1):
-        sol = solve_translation_wls(edges, gamma, weights, n, alpha_lower=1.0,
-                                    max_iter=params.wls_max_iter, tol=params.wls_tol)
-        t, alpha, residuals = sol.t, sol.alpha, sol.residual_norms
-        sc = cycle_scores_from_locations(
+
+    try:
+        tic = time.perf_counter()
+        n, m = adj.shape[0], len(edges)
+        taab = truncated_aab_scores(
             adj,
             edges,
             gamma,
-            t,
-            residuals,
-            beta=params.beta,
-            nsample=params.cycle_nsample,
-            seed=None if params.seed is None else params.seed + 7919 * it,
-            no_cycle_value=params.no_cycle_value,
+            nsample=params.taab_nsample,
+            sinmin=params.sinmin,
+            niter=params.taab_iters,
+            normalize_by_pi=params.normalize_taab_by_pi,
+            seed=params.seed,
         )
-        lam = it / (it + params.lambda_offset)
-        h = (1 - lam) * residuals + lam * sc
-        weights = _weights_from_scores(h, params)
-        weights = np.where(np.isfinite(weights), weights, 0.0)
-        if np.max(weights) <= 0:
-            weights = np.ones_like(weights)
-        history.append({
-            "iter": it,
-            "lambda": lam,
-            "median_residual": float(np.median(residuals)),
-            "median_cycle_score": float(np.median(sc)),
-            "min_weight": float(np.min(weights)),
-            "max_weight": float(np.max(weights)),
-            "wls_status": sol.status,
-            "wls_cost": sol.cost,
-        })
-    return CycleSyncResult(t, alpha, weights, residuals, sc, taab.scores, history, time.perf_counter() - tic, params)
+        weights = np.exp(-params.init_weight_scale * taab.scores) if params.use_taab_init else np.ones(m)
+        history = []
+        alpha = np.ones(m)
+        residuals = np.ones(m)
+        sc = taab.scores.copy()
+        t = np.zeros((3, n))
+
+        for it in range(1, params.tmax + 1):
+            sol = solve_translation_wls(
+                edges, gamma, weights, n,
+                alpha_lower=1.0,
+                max_iter=params.wls_max_iter,
+                tol=params.wls_tol,
+            )
+            t, alpha, residuals = sol.t, sol.alpha, sol.residual_norms
+            sc = cycle_scores_from_locations(
+                adj,
+                edges,
+                gamma,
+                t,
+                residuals,
+                beta=params.beta,
+                nsample=params.cycle_nsample,
+                seed=None if params.seed is None else params.seed + 7919 * it,
+                no_cycle_value=params.no_cycle_value,
+            )
+            lam = it / (it + params.lambda_offset)
+            h = (1 - lam) * residuals + lam * sc
+            weights = _weights_from_scores(h, params)
+            weights = np.where(np.isfinite(weights), weights, 0.0)
+            if np.max(weights) <= 0:
+                weights = np.ones_like(weights)
+
+            history.append({
+                "iter": it,
+                "lambda": lam,
+                "median_residual": float(np.median(residuals)),
+                "median_cycle_score": float(np.median(sc)),
+                "min_weight": float(np.min(weights)),
+                "max_weight": float(np.max(weights)),
+                "wls_status": sol.status,
+                "wls_cost": sol.cost,
+            })
+
+        out = CycleSyncResult(
+            t, alpha, weights, residuals, sc, taab.scores,
+            history, time.perf_counter() - tic, params
+        )
+
+        if (
+            not np.all(np.isfinite(out.t))
+            or not np.all(np.isfinite(out.weights))
+            or not np.all(np.isfinite(out.residual_norms))
+        ):
+            raise FloatingPointError("non-finite Cycle-Sync output")
+
+        return out
+
+    except Exception:
+        if params.sinmin > 0:
+            params0 = CycleSyncParams(**{**vars(params), "sinmin": 0.0})
+            return cycle_sync_location(adj, edges, gamma, params0)
+        raise
